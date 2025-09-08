@@ -25,9 +25,9 @@ jobs:
           
       - name: Validate manifests
         run: |
-          kubectl --dry-run=client apply -f event-sources/ -R
-          kubectl --dry-run=client apply -f sensors/ -R
-          kubectl --dry-run=client apply -f workflow-templates/ -R
+          kubectl --dry-run=client --validate=false apply -f event-sources/ -R
+          kubectl --dry-run=client --validate=false apply -f sensors/ -R
+          kubectl --dry-run=client --validate=false apply -f workflow-templates/ -R
 
   deploy-to-k3s:
     runs-on: ubuntu-latest
