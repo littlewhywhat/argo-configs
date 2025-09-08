@@ -14,6 +14,7 @@ echo "🧹 Cleaning up existing resources..."
 kubectl delete eventsource -l app=demo-coding-agent -n argo --ignore-not-found=true
 kubectl delete sensor -l app=demo-coding-agent -n argo --ignore-not-found=true  
 kubectl delete workflowtemplate -l app=demo-coding-agent -n argo --ignore-not-found=true
+kubectl delete ingress -l app=demo-coding-agent -n argo --ignore-not-found=true
 sleep 3
 
 # Deploy new resources
@@ -26,10 +27,14 @@ kubectl apply -f sensors/ --validate=true
 echo "⚙️ Deploying WorkflowTemplates..."
 kubectl apply -f workflow-templates/ --validate=true
 
+echo "🌐 Deploying Ingresses..."
+kubectl apply -f ingresses/ --validate=true
+
 # Show results
 echo "✅ Deployment Status:"
 kubectl get eventsources -n argo
 kubectl get sensors -n argo
 kubectl get workflowtemplates -n argo
+kubectl get ingress -n argo
 
 echo "🎉 Deployment completed!"
