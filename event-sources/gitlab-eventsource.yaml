@@ -18,8 +18,11 @@ spec:
         port: "12000"
         method: POST
       events:
-        - CommentEvents
+        - NoteEvents
       accessToken:
         name: demo-coding-agent-gitlab-secret
         key: token
+      # secretToken:
+      #   name: demo-coding-agent-gitlab-secret
+      #   key: webhook-secret
       gitlabBaseURL: https://gitlab.com
