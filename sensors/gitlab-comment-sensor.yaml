@@ -11,7 +11,7 @@ spec:
   dependencies:
     - name: gitlab-dep
       eventSourceName: gitlab-eventsource
-      eventName: gitlab-webhook
+      eventName: example
       filters:
         data:
           - path: body.object_kind

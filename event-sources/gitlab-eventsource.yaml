@@ -11,17 +11,16 @@ spec:
     - port: 12000
       targetPort: 12000
   gitlab:
-    gitlab-webhook:
-      port: 12000
-      endpoint: /gitlab
-      gitlabBaseURL: https://gitlab.com
-      projects:
-        - "74245624"
+    example:
+      projectID: "74245624"
+      webhook:
+        endpoint: /gitlab
+        port: "12000"
+        method: POST
+        url: http://gitlab-eventsource-eventsource-svc.argo.svc.cluster.local:12000/gitlab
       events:
-        - "note"
+        - CommentEvents
       accessToken:
         name: demo-coding-agent-gitlab-secret
         key: token
-      secretToken:
-        name: demo-coding-agent-gitlab-secret
-        key: webhook-secret
+      gitlabBaseURL: https://gitlab.com
