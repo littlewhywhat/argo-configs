@@ -3,6 +3,8 @@ kind: EventSource
 metadata:
   name: gitlab-eventsource
   namespace: argo
+  labels:
+    app: demo-coding-agent
 spec:
   service:
     ports:
