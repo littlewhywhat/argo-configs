@@ -14,10 +14,10 @@ spec:
       eventName: commentWebhook
       filters:
         data:
-          - path: body.object_kind
+          - path: body.object_attributes.note
             type: string
             value:
-              - "note"
+              - "^tanurkod.*"
   triggers:
     - template:
         name: gitlab-comment-trigger
