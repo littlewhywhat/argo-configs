@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: gitlab-comment-workflow-template
+  namespace: argo
+spec:
+  arguments:
+    parameters:
+      - name: comment
+      - name: project-id
+      - name: merge-request-id
+  entrypoint: gitlab-comment-handler
+  templates:
+    - name: gitlab-comment-handler
+      container:
+        image: registry.gitlab.com/littlewhywhat/demo-tanurkod:latest
+        imagePullPolicy: Always
+        env:
+          - name: COMMENT
+            value: "{{workflow.parameters.comment}}"
+          - name: PROJECT_ID
+            value: "{{workflow.parameters.project-id}}"
+          - name: MERGE_REQUEST_ID
+            value: "{{workflow.parameters.merge-request-id}}"
+          - name: GITLAB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: demo-coding-agent-workflow-secrets
+                key: gitlab-token
+          - name: CURSOR_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: demo-coding-agent-workflow-secrets
+                key: cursor-token
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+  imagePullSecrets:
+    - name: demo-coding-agent-gitlab-registry

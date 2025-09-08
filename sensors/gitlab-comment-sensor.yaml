@@ -1,0 +1,59 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: gitlab-comment-sensor
+  namespace: argo
+spec:
+  template:
+    serviceAccountName: argo
+  dependencies:
+    - name: gitlab-dep
+      eventSourceName: gitlab-eventsource
+      eventName: gitlab-webhook
+      filters:
+        data:
+          - path: body.object_kind
+            type: string
+            value:
+              - "note"
+          - path: body.object_attributes.note
+            type: string
+            comparator: "~"
+            value:
+              - "^tanurkod:.*"
+  triggers:
+    - template:
+        name: gitlab-comment-trigger
+        argoWorkflow:
+          operation: create
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: gitlab-comment-workflow-
+                namespace: argo
+              spec:
+                workflowTemplateRef:
+                  name: gitlab-comment-workflow-template
+                arguments:
+                  parameters:
+                    - name: comment
+                      value: ""
+                    - name: project-id
+                      value: ""
+                    - name: merge-request-id
+                      value: ""
+          parameters:
+            - src:
+                dependencyName: gitlab-dep
+                dataKey: body.object_attributes.note
+              dest: spec.arguments.parameters.0.value
+            - src:
+                dependencyName: gitlab-dep
+                dataKey: body.project.id
+              dest: spec.arguments.parameters.1.value
+            - src:
+                dependencyName: gitlab-dep
+                dataKey: body.merge_request.id
+              dest: spec.arguments.parameters.2.value

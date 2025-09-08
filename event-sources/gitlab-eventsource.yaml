@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: gitlab-eventsource
+  namespace: argo
+spec:
+  service:
+    ports:
+      - port: 12000
+        targetPort: 12000
+  gitlab:
+    gitlab-webhook:
+      port: "12000"
+      endpoint: /gitlab
+      projectID: ""  # Will match any project
+      events:
+        - Note Hook
+      secretToken:
+        name: demo-coding-agent-gitlab-secret
+        key: webhook-secret
+      gitlab:
+        baseURL: https://gitlab.com
+        token:
+          name: demo-coding-agent-gitlab-secret
+          key: token
