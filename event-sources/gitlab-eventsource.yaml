@@ -8,20 +8,19 @@ metadata:
 spec:
   service:
     ports:
-      - port: 12000
-        targetPort: 12000
+    - port: 12000
+      targetPort: 12000
   gitlab:
     gitlab-webhook:
       port: "12000"
       endpoint: /gitlab
-      projectID: ""  # Will match any project
+      method: POST
+      url: http://gitlab.com
       events:
-        - Note Hook
+      - Note Hook
+      accessToken:
+        name: demo-coding-agent-gitlab-secret
+        key: token
       secretToken:
         name: demo-coding-agent-gitlab-secret
         key: webhook-secret
-      gitlab:
-        baseURL: https://gitlab.com
-        token:
-          name: demo-coding-agent-gitlab-secret
-          key: token
