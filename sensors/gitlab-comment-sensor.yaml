@@ -20,9 +20,9 @@ spec:
               - "note"
           - path: body.object_attributes.note
             type: string
-            comparator: "~"
+            comparator: "contains"
             value:
-              - "^tanurkod:.*"
+              - "tanurkod:"
   triggers:
     - template:
         name: gitlab-comment-trigger

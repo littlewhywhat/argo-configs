@@ -15,6 +15,8 @@ spec:
       port: "12000"
       endpoint: /gitlab
       url: https://gitlab.com
+      projects:
+        - ""
       events:
         - "Note Hook"
       accessToken:
