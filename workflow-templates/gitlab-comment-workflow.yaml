@@ -12,8 +12,6 @@ spec:
       - name: project-id
       - name: merge-request-id
       - name: full-payload
-      - name: repo-url
-        value: "https://gitlab.com/littlewhywhat/demo-tanurkod.git"
   entrypoint: debug-and-process
   templates:
     - name: debug-and-process
@@ -21,11 +19,9 @@ spec:
         tasks:
           - name: debug-payload
             template: debug-payload-step
-          - name: clone-repo
-            template: clone-repository
           - name: process-comment
             template: gitlab-comment-handler
-            dependencies: [debug-payload, clone-repo]
+            dependencies: [debug-payload]
     
     - name: debug-payload-step
       container:
