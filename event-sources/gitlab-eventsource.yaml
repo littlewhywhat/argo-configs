@@ -11,7 +11,7 @@ spec:
     - port: 12000
       targetPort: 12000
   gitlab:
-    example:
+    commentWebhook:
       projectID: "74245624"
       webhook:
         endpoint: /gitlab
