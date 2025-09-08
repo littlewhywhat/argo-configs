@@ -28,8 +28,8 @@ kubectl apply -f workflow-templates/ --validate=true
 
 # Show results
 echo "✅ Deployment Status:"
-kubectl get eventsources -n argo-events
-kubectl get sensors -n argo-events
+kubectl get eventsources -n argo
+kubectl get sensors -n argo
 kubectl get workflowtemplates -n argo
 
 echo "🎉 Deployment completed!"
