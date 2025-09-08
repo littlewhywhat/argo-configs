@@ -54,7 +54,7 @@ spec:
               dest: spec.arguments.parameters.1.value
             - src:
                 dependencyName: gitlab-dep
-                dataKey: body.merge_request.id
+                dataKey: body.merge_request.iid
               dest: spec.arguments.parameters.2.value
             - src:
                 dependencyName: gitlab-dep
