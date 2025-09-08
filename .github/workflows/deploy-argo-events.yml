@@ -8,7 +8,7 @@ on:
   workflow_dispatch:  # 👈 Manual trigger equivalent
 
 env:
-  KUBECTL_VERSION: "1.28.0"
+  KUBECTL_VERSION: "1.30.0"
 
 jobs:
   validate-manifests:
