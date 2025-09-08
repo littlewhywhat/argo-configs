@@ -14,6 +14,7 @@ jobs:
   validate-manifests:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' || github.event_name == 'push'
+    environment: workflow
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
