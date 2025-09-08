@@ -43,6 +43,7 @@ spec:
       container:
         image: registry.gitlab.com/littlewhywhat/demo-tanurkod:latest
         imagePullPolicy: Always
+        workingDir: /workspace
         env:
           - name: COMMENT
             value: "{{workflow.parameters.comment}}"
@@ -60,6 +61,9 @@ spec:
               secretKeyRef:
                 name: demo-coding-agent-workflow-secrets
                 key: cursor-token
+        volumeMounts:
+          - name: workspace
+            mountPath: /workspace
         resources:
           requests:
             memory: "128Mi"
@@ -67,5 +71,9 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
+      volumes:
+        - name: workspace
+          emptyDir:
+            sizeLimit: 1Gi
   imagePullSecrets:
     - name: demo-coding-agent-gitlab-registry
