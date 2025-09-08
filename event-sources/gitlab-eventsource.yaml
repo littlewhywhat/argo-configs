@@ -14,10 +14,9 @@ spec:
     gitlab-webhook:
       port: "12000"
       endpoint: /gitlab
-      method: POST
-      gitlabBaseURL: https://gitlab.com
+      url: https://gitlab.com
       events:
-      - "Note Hook"
+        - "Note Hook"
       accessToken:
         name: demo-coding-agent-gitlab-secret
         key: token
