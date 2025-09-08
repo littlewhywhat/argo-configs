@@ -11,8 +11,8 @@ kubectl cluster-info --request-timeout=10s
 
 # Cleanup existing resources
 echo "🧹 Cleaning up existing resources..."
-kubectl delete eventsource -l app=demo-coding-agent -n argo-events --ignore-not-found=true
-kubectl delete sensor -l app=demo-coding-agent -n argo-events --ignore-not-found=true  
+kubectl delete eventsource -l app=demo-coding-agent -n argo --ignore-not-found=true
+kubectl delete sensor -l app=demo-coding-agent -n argo --ignore-not-found=true  
 kubectl delete workflowtemplate -l app=demo-coding-agent -n argo --ignore-not-found=true
 sleep 3
 
