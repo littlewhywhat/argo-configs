@@ -17,7 +17,6 @@ spec:
         endpoint: /gitlab
         port: "12000"
         method: POST
-        url: http://gitlab-eventsource-eventsource-svc.argo.svc.cluster.local:12000/gitlab
       events:
         - CommentEvents
       accessToken:
