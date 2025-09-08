@@ -11,8 +11,24 @@ spec:
       - name: comment
       - name: project-id
       - name: merge-request-id
-  entrypoint: gitlab-comment-handler
+      - name: full-payload
+  entrypoint: debug-and-process
   templates:
+    - name: debug-and-process
+      dag:
+        tasks:
+          - name: debug-payload
+            template: debug-payload-step
+          - name: process-comment
+            template: gitlab-comment-handler
+            dependencies: [debug-payload]
+    
+    - name: debug-payload-step
+      container:
+        image: alpine:latest
+        command: [sh, -c]
+        args: ["apk add --no-cache jq && echo 'FULL PAYLOAD:' && echo '{{workflow.parameters.full-payload}}' | jq . && echo '======================================' && echo 'EXTRACTED VALUES:' && echo 'COMMENT: {{workflow.parameters.comment}}' && echo 'PROJECT_ID: {{workflow.parameters.project-id}}' && echo 'MERGE_REQUEST_ID: {{workflow.parameters.merge-request-id}}'"]
+    
     - name: gitlab-comment-handler
       container:
         image: registry.gitlab.com/littlewhywhat/demo-tanurkod:latest

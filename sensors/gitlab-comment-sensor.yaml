@@ -41,6 +41,8 @@ spec:
                       value: ""
                     - name: merge-request-id
                       value: ""
+                    - name: full-payload
+                      value: ""
           parameters:
             - src:
                 dependencyName: gitlab-dep
@@ -54,3 +56,7 @@ spec:
                 dependencyName: gitlab-dep
                 dataKey: body.merge_request.id
               dest: spec.arguments.parameters.2.value
+            - src:
+                dependencyName: gitlab-dep
+                dataKey: body
+              dest: spec.arguments.parameters.3.value
