@@ -12,6 +12,8 @@ spec:
       - name: project-id
       - name: merge-request-id
       - name: full-payload
+      - name: repo-url
+        value: "https://gitlab.com/littlewhywhat/demo-tanurkod.git"
   entrypoint: debug-and-process
   templates:
     - name: debug-and-process
@@ -19,9 +21,11 @@ spec:
         tasks:
           - name: debug-payload
             template: debug-payload-step
+          - name: clone-repo
+            template: clone-repository
           - name: process-comment
             template: gitlab-comment-handler
-            dependencies: [debug-payload]
+            dependencies: [debug-payload, clone-repo]
     
     - name: debug-payload-step
       container:
@@ -38,6 +42,32 @@ spec:
             echo "COMMENT: {{workflow.parameters.comment}}"
             echo "PROJECT_ID: {{workflow.parameters.project-id}}"
             echo "MERGE_REQUEST_ID: {{workflow.parameters.merge-request-id}}"
+    
+    - name: clone-repository
+      container:
+        image: alpine/git:latest
+        workingDir: /workspace
+        command: [sh]
+        args:
+          - -c
+          - |
+            echo "Cloning repository: {{workflow.parameters.repo-url}}"
+            git clone {{workflow.parameters.repo-url}} .
+            echo "Repository cloned successfully"
+            ls -la
+        env:
+          - name: GITLAB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: demo-coding-agent-workflow-secrets
+                key: gitlab-token
+        volumeMounts:
+          - name: workspace
+            mountPath: /workspace
+      volumes:
+        - name: workspace
+          emptyDir:
+            sizeLimit: 1Gi
     
     - name: gitlab-comment-handler
       container:
