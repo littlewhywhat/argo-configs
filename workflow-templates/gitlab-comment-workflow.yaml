@@ -39,37 +39,10 @@ spec:
             echo "PROJECT_ID: {{workflow.parameters.project-id}}"
             echo "MERGE_REQUEST_ID: {{workflow.parameters.merge-request-id}}"
     
-    - name: clone-repository
-      container:
-        image: alpine/git:latest
-        workingDir: /workspace
-        command: [sh]
-        args:
-          - -c
-          - |
-            echo "Cloning repository: {{workflow.parameters.repo-url}}"
-            git clone {{workflow.parameters.repo-url}} .
-            echo "Repository cloned successfully"
-            ls -la
-        env:
-          - name: GITLAB_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: demo-coding-agent-workflow-secrets
-                key: gitlab-token
-        volumeMounts:
-          - name: workspace
-            mountPath: /workspace
-      volumes:
-        - name: workspace
-          emptyDir:
-            sizeLimit: 1Gi
-    
     - name: gitlab-comment-handler
       container:
         image: registry.gitlab.com/littlewhywhat/demo-tanurkod:latest
         imagePullPolicy: Always
-        workingDir: /workspace
         env:
           - name: COMMENT
             value: "{{workflow.parameters.comment}}"
