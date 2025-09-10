@@ -11,7 +11,7 @@ spec:
   dependencies:
     - name: slack-dep
       eventSourceName: slack-eventsource
-      eventName: slackMentions
+      eventName: slack-socketmode
   triggers:
     - template:
         name: slack-mention-trigger
