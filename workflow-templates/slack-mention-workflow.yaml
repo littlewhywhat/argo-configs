@@ -48,9 +48,9 @@ spec:
           - name: COMMENT
             value: "{{workflow.parameters.prompt}}"
           - name: PROJECT_ID
-            value: "74245624"
+            value: "74326122"
           - name: MERGE_REQUEST_ID
-            value: "8"
+            value: "2"
           - name: GITLAB_TOKEN
             valueFrom:
               secretKeyRef:
