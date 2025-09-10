@@ -15,11 +15,15 @@ kubectl delete eventsource -l app=demo-coding-agent -n argo --ignore-not-found=t
 kubectl delete sensor -l app=demo-coding-agent -n argo --ignore-not-found=true  
 kubectl delete workflowtemplate -l app=demo-coding-agent -n argo --ignore-not-found=true
 kubectl delete ingress -l app=demo-coding-agent -n argo --ignore-not-found=true
+kubectl delete deployment -l app=demo-coding-agent -n argo --ignore-not-found=true
 sleep 3
 
 # Deploy new resources
 echo "📦 Deploying EventSources..."
-kubectl apply -f event-sources/ --validate=true
+kubectl apply -f event-sources/ --validate=true || echo "No event sources to deploy"
+
+echo "🚀 Deploying Slack Socket Mode Listener..."
+kubectl apply -f deployments/ --validate=true
 
 echo "📡 Deploying Sensors..."  
 kubectl apply -f sensors/ --validate=true

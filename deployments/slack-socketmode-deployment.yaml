@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slack-socketmode-listener
+  namespace: argo
+  labels:
+    app: demo-coding-agent
+    component: slack-socketmode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-coding-agent
+      component: slack-socketmode
+  template:
+    metadata:
+      labels:
+        app: demo-coding-agent
+        component: slack-socketmode
+    spec:
+      serviceAccountName: argo-events-sa
+      containers:
+      - name: slack-socketmode
+        image: registry.gitlab.com/littlewhywhat/slackbot-eventsource:latest
+        env:
+        - name: SLACK_APP_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: demo-coding-agent-slack-secrets
+              key: app-token
+        - name: SLACK_BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: demo-coding-agent-slack-secrets
+              key: bot-token
+        - name: NATS_URL
+          value: "nats://eventbus-default-stan-svc:4222"
+        - name: NATS_CLUSTER_ID
+          value: "eventbus-default"
+        - name: NATS_SUBJECT
+          value: "slack-mentions"
+        - name: EVENTBUS_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: eventbus-default-client
+              key: client-auth
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - "pgrep node > /dev/null || exit 1"
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - "pgrep node > /dev/null || exit 1"
+          initialDelaySeconds: 10
+          periodSeconds: 10
