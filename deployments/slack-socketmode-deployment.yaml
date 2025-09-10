@@ -18,7 +18,7 @@ spec:
         app: demo-coding-agent
         component: slack-socketmode
     spec:
-      serviceAccountName: argo-events-sa
+      serviceAccountName: argo
       containers:
       - name: slack-socketmode
         image: registry.gitlab.com/littlewhywhat/slackbot-eventsource:latest
