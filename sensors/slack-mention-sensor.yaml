@@ -10,7 +10,7 @@ spec:
     serviceAccountName: argo
   dependencies:
     - name: slack-dep
-      eventSourceName: slack-eventsource
+      eventBusName: default  
       eventName: slack-mentions
   triggers:
     - template:
