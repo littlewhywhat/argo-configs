@@ -1,0 +1,79 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: slack-mention-workflow-template
+  namespace: argo
+  labels:
+    app: demo-coding-agent
+spec:
+  arguments:
+    parameters:
+      - name: prompt
+      - name: project-id
+      - name: merge-request-id
+      - name: full-payload
+  entrypoint: debug-and-process
+  templates:
+    - name: debug-and-process
+      dag:
+        tasks:
+          - name: debug-payload
+            template: debug-payload-step
+          - name: process-mention
+            template: slack-mention-handler
+            dependencies: [debug-payload]
+    
+    - name: debug-payload-step
+      container:
+        image: alpine:latest
+        command: [sh]
+        args:
+          - -c
+          - |
+            apk add --no-cache jq
+            echo "FULL PAYLOAD:"
+            echo '{{workflow.parameters.full-payload}}' | jq .
+            echo "======================================"
+            echo "EXTRACTED VALUES:"
+            echo "PROMPT: {{workflow.parameters.prompt}}"
+            echo "PROJECT_ID: {{workflow.parameters.project-id}}"
+            echo "MERGE_REQUEST_ID: {{workflow.parameters.merge-request-id}}"
+    
+    - name: slack-mention-handler
+      container:
+        image: registry.gitlab.com/littlewhywhat/demo-tanurkod:6b582ae1b9f44da14944a49e4737ecbe8337769e
+        # image: registry.gitlab.com/littlewhywhat/demo-tanurkod:latest
+        imagePullPolicy: Always
+        env:
+          - name: COMMENT
+            value: "{{workflow.parameters.prompt}}"
+          - name: PROJECT_ID
+            value: "74245624"
+          - name: MERGE_REQUEST_ID
+            value: "8"
+          - name: GITLAB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: demo-coding-agent-workflow-secrets
+                key: gitlab-token
+          - name: CURSOR_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: demo-coding-agent-workflow-secrets
+                key: cursor-token
+        volumeMounts:
+          - name: workspace
+            mountPath: /workspace
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      volumes:
+        - name: workspace
+          emptyDir:
+            sizeLimit: 1Gi
+  imagePullSecrets:
+    - name: demo-coding-agent-gitlab-registry

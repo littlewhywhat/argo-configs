@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: slack-mention-sensor
+  namespace: argo
+  labels:
+    app: demo-coding-agent
+spec:
+  template:
+    serviceAccountName: argo
+  dependencies:
+    - name: slack-dep
+      eventSourceName: slack-eventsource
+      eventName: slackMentions
+  triggers:
+    - template:
+        name: slack-mention-trigger
+        argoWorkflow:
+          operation: submit
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: slack-mention-workflow-
+                namespace: argo
+              spec:
+                workflowTemplateRef:
+                  name: slack-mention-workflow-template
+                arguments:
+                  parameters:
+                    - name: prompt
+                      value: ""
+                    - name: project-id
+                      value: ""
+                    - name: merge-request-id
+                      value: ""
+                    - name: full-payload
+                      value: ""
+          parameters:
+            - src:
+                dependencyName: slack-dep
+                dataKey: body.event.text
+              dest: spec.arguments.parameters.0.value
+            - src:
+                dependencyName: slack-dep
+                dataKey: body
+              dest: spec.arguments.parameters.3.value
