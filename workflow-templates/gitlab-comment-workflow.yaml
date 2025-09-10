@@ -41,7 +41,8 @@ spec:
     
     - name: gitlab-comment-handler
       container:
-        image: registry.gitlab.com/littlewhywhat/demo-tanurkod:latest
+        image: registry.gitlab.com/littlewhywhat/demo-tanurkod:6b582ae1b9f44da14944a49e4737ecbe8337769e
+        # image: registry.gitlab.com/littlewhywhat/demo-tanurkod:latest
         imagePullPolicy: Always
         env:
           - name: COMMENT
