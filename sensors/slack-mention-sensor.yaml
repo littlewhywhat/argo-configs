@@ -10,7 +10,7 @@ spec:
     serviceAccountName: argo
   dependencies:
     - name: slack-dep
-      eventBusName: default
+      eventSourceName: slack-eventsource
       eventName: slack-mentions
   triggers:
     - template:
@@ -40,9 +40,9 @@ spec:
           parameters:
             - src:
                 dependencyName: slack-dep
-                dataKey: body.event.text
+                dataKey: text
               dest: spec.arguments.parameters.0.value
             - src:
                 dependencyName: slack-dep
-                dataKey: body
+                dataKey: data
               dest: spec.arguments.parameters.3.value

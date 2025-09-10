@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: slack-eventsource
+  namespace: argo
+  labels:
+    app: demo-coding-agent
+spec:
+  template:
+    serviceAccountName: argo
+  nats:
+    slack-mentions:
+      url: nats://eventbus-default-stan-svc:4222
+      subject: slack-mentions
+      auth:
+        token:
+          name: eventbus-default-client
+          key: client-auth
