@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: slack-eventsource
+  namespace: argo
+  labels:
+    app: demo-coding-agent
+spec:
+  template:
+    serviceAccountName: argo
+  calendar:
+    slack-mentions:
+      schedule: "0 0 1 1 *"  # Never triggers (Jan 1st yearly)
+      timezone: UTC
+      metadata:
+        name: dummy-slack-event
