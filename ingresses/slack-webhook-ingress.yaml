@@ -20,3 +20,6 @@ spec:
             name: slack-eventsource-eventsource-svc
             port:
               number: 13000
+  tls:
+  - hosts:
+    - slack.18.208.214.163.nip.io
