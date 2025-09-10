@@ -8,18 +8,18 @@ metadata:
 spec:
   template:
     serviceAccountName: argo-events-sa
-  slack-socketmode:
-    type: custom
-    container:
-      image: registry.gitlab.com/littlewhywhat/slackbot-eventsource:latest
-      env:
-        - name: SLACK_APP_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: demo-coding-agent-slack-secrets
-              key: app-token
-        - name: SLACK_BOT_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: demo-coding-agent-slack-secrets
-              key: bot-token
+  custom:
+    slack-socketmode:
+      container:
+        image: registry.gitlab.com/littlewhywhat/slackbot-eventsource:latest
+        env:
+          - name: SLACK_APP_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: demo-coding-agent-slack-secrets
+                key: app-token
+          - name: SLACK_BOT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: demo-coding-agent-slack-secrets
+                key: bot-token
