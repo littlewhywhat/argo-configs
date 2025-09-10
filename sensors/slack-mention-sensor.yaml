@@ -40,9 +40,9 @@ spec:
           parameters:
             - src:
                 dependencyName: slack-dep
-                dataKey: data.text
+                dataKey: body.text
               dest: spec.arguments.parameters.0.value
             - src:
                 dependencyName: slack-dep
-                dataKey: data
+                dataKey: body
               dest: spec.arguments.parameters.3.value
