@@ -50,7 +50,7 @@ spec:
           - name: PROJECT_ID
             value: "74326122"
           - name: MERGE_REQUEST_ID
-            value: "2"
+            value: "3"
           - name: GITLAB_TOKEN
             valueFrom:
               secretKeyRef:
