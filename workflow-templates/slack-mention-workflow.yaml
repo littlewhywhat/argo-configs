@@ -41,16 +41,18 @@ spec:
     
     - name: slack-mention-handler
       container:
-        image: registry.gitlab.com/littlewhywhat/demo-tanurkod:6b582ae1b9f44da14944a49e4737ecbe8337769e
-        # image: registry.gitlab.com/littlewhywhat/demo-tanurkod:latest
+        # image: registry.gitlab.com/littlewhywhat/demo-tanurkod:6b582ae1b9f44da14944a49e4737ecbe8337769e
+        image: registry.gitlab.com/littlewhywhat/demo-tanurkod:latest
         imagePullPolicy: Always
         env:
           - name: COMMENT
             value: "{{workflow.parameters.prompt}}"
           - name: PROJECT_ID
-            value: "74245624"
+            value: "1699"
           - name: MERGE_REQUEST_ID
-            value: "8"
+            value: "404"
+          - name: GITLAB_URL
+            value: "https://gitlab.int.similarweb.io/"
           - name: GITLAB_TOKEN
             valueFrom:
               secretKeyRef:
